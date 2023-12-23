@@ -1,100 +1,89 @@
-// components/SermonsSection.js
-import React from 'react';
+// pages/audio.tsx
+import React, { useRef } from 'react';
 
-const SermonsSection = () => {
-  const sermonSeries = [
-    {
-      title: 'Finding Hope in Adversity',
-      sermons: [
-        {
-          title: 'Overcoming Challenges',
-          speaker: 'Rev. John Doe',
-          date: 'January 8, 2023',
-          mediaUrl: 'https://example.com/sermon1.mp3',
-        },
-        {
-          title: 'Faith in Difficult Times',
-          speaker: 'Pastor Jane Smith',
-          date: 'January 15, 2023',
-          mediaUrl: 'https://example.com/sermon2.mp3',
-        },
-        {
-            title: 'Faith in Difficult Times',
-            speaker: 'Pastor Jane Smith',
-            date: 'January 15, 2023',
-            mediaUrl: 'https://example.com/sermon2.mp3',
-          },
-        // Add more sermons as needed
-      ],
-    },
-    {
-      title: 'Journey through the Psalms',
-      sermons: [
-        {
-          title: 'Psalm 23: The Lord is My Shepherd',
-          speaker: 'Rev. Michael Johnson',
-          date: 'January 22, 2023',
-          mediaUrl: 'https://example.com/sermon3.mp3',
-        },
-        {
-          title: 'Psalm 51: A Prayer for Forgiveness',
-          speaker: 'Pastor Sarah Williams',
-          date: 'January 29, 2023',
-          mediaUrl: 'https://example.com/sermon4.mp3',
-        },
-        {
-            title: 'Psalm 51: A Prayer for Forgiveness',
-            speaker: 'Pastor Sarah Williams',
-            date: 'January 29, 2023',
-            mediaUrl: 'https://example.com/sermon4.mp3',
-          },
-        // Add more sermons as needed
-      ],
-    },
-    // Add more sermon series as needed
-  ];
+interface Sermon {
+  id: number;
+  title: string;
+  speaker: string;
+  date: string;
+  audioSrc: string;
+}
+
+const sermonsData: Sermon[] = [
+  {
+    id: 1,
+    title: 'Sermon 1',
+    speaker: 'Pastor John Doe',
+    date: '2023-01-01',
+    audioSrc: '/audio/lesson1.mp4',
+  },
+  {
+    id: 2,
+    title: 'Sermon 2',
+    speaker: 'Pastor Jane Smith',
+    date: '2023-02-01',
+    audioSrc: '/audio/lesson2.mp4',
+  },
+  {
+    id: 3,
+    title: 'Sermon 3',
+    speaker: 'Pastor John Doe',
+    date: '2023-01-01',
+    audioSrc: '/audio/lesson3.mp4',
+  },
+  {
+    id: 4,
+    title: 'Sermon 4',
+    speaker: 'Pastor Jane Smith',
+    date: '2023-02-01',
+    audioSrc: '/audio/lesson4.mp4',
+  },
+  {
+    id: 5,
+    title: 'Sermon 5',
+    speaker: 'Pastor John Doe',
+    date: '2023-01-01',
+    audioSrc: '/audio/lesson5.mp4',
+  },
+];
+
+const SermonsSection: React.FC = () => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const handleSermonClick = (sermon: Sermon) => {
+    // Play the audio when a sermon is clicked
+    if (audioRef.current) {
+      audioRef.current.src = sermon.audioSrc;
+      audioRef.current.play();
+    }
+  };
 
   return (
-    <section id="sermons" className="px-2 bg-gradient-to-r from-red-900 to-indigo-900 py-12 text-white">
-      <div className="container mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold">Sermons</h2>
-          <p className="text-gray-200">Explore our sermons and find inspiration.</p>
-        </div>
+    <div className="bg-gray-800 min-h-screen p-2 py-40">      
+      <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-4xl text-white md:text-3xl lg:text-4xl font-bold">Enjoy Our Sermon</h2>
+          <p className="text-gray-200 text-sm md:text-base">Listening to our sermon/messages for a great transformation</p>
+      </div>
 
-        {sermonSeries.map((series, index) => (
-          <div key={index} className="mb-8">
-            <h3 className="text-2xl font-bold mb-4">{series.title}</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <h1 className="text-3xl font-bold text-white mb-4 text-center pt-5">Audio Sermons</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {sermonsData.map((sermon) => (
+          <div
+            key={sermon.id}
+            className="bg-white p-4 rounded-md cursor-pointer"
+            onClick={() => handleSermonClick(sermon)}
+          >
+            <h2 className="text-xl font-bold mb-2">{sermon.title}</h2>
 
-              {series.sermons.map((sermon, sermonIndex) => (
-                <div key={sermonIndex} className="bg-indigo-900 p-4 rounded-lg">
-                  <h4 className="text-lg font-bold mb-2">{sermon.title}</h4>
-                  <p className="text-gray-200">
-                    <span className="font-bold">Speaker:</span> {sermon.speaker}<br />
-                    <span className="font-bold">Date:</span> {sermon.date}<br />
-                  </p>
-                  <div className="mt-4">
-                    {/* Media Player */}
-                    <audio controls>
-                      <source src={sermon.mediaUrl} type="audio/mp3" />
-                      Your browser does not support the audio element.
-                    </audio>
+            {/* Audio Player */}
+            <audio ref={audioRef} controls src={sermon.audioSrc} className="mb-2" />
 
-                    {/* Download Options */}
-                    <div className="mt-2">
-                      <a href={sermon.mediaUrl} download className="text-blue-300 hover:text-blue-100 transition duration-300">
-                        Download
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}              
-            </div>
+            <p className="text-gray-600 mb-2">{sermon.speaker}</p>
+            <p className="text-gray-600">{sermon.date}</p>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 
