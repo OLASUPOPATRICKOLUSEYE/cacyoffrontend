@@ -1,6 +1,9 @@
 "use client";
+// components/EventsSection.tsx
 import React, { useState, useEffect } from 'react';
+import client from '../../lib/client';
 
+// TypeScript Types
 interface Event {
   title: string;
   date: string;
@@ -22,59 +25,45 @@ const EventsSection: React.FC = () => {
   const [timers, setTimers] = useState<Timer[]>([]);
 
   useEffect(() => {
-    const events: Event[] = [
-      {
-        title: 'Community Fellowship Night Programme',
-        date: '2023-12-31',
-        time: '18:30:00', // 24-hour format
-        location: 'Main Hall',
-        description: 'Join us for an evening of fellowship, music, and community bonding.',
-      },
-      {
-        title: 'Sunday Worship Service Programme',
-        date: '2024-01-25',
-        time: '09:00:00', // 24-hour format
-        location: 'Main Sanctuary',
-        description: 'Come together for a powerful worship experience and an uplifting message.',
-      },
-      // Add more events as needed
-    ];
+    const fetchEventsData = async () => {
+      try {
+        // Fetch events data from the backend
+        const response = await client.fetch('*[_type == "event"]{title, date, time, location, description}');
+        const now = new Date();
 
-    const calculateTimeRemaining = () => {
-      const now = new Date();
+        // Calculate time remaining for each event
+        const updatedTimers: Timer[] = response.map((event:any) => {
+          const eventDate = new Date(`${event.date} ${event.time}`);
+          const timeDifference = eventDate.getTime() - now.getTime();
 
-      const updatedTimers: Timer[] = events.map((event) => {
-        const eventDate = new Date(`${event.date} ${event.time}`);
-        const timeDifference = eventDate.getTime() - now.getTime();
+          const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+          return {
+            ...event,
+            timeRemaining: {
+              days,
+              hours,
+              minutes,
+              seconds,
+            },
+          };
+        });
 
-        return {
-          ...event,
-          timeRemaining: {
-            days,
-            hours,
-            minutes,
-            seconds,
-          },
-        };
-      });
-
-      setTimers(updatedTimers);
+        setTimers(updatedTimers);
+      } catch (error) {
+        console.error('Error fetching events data:', error);
+      }
     };
 
-    const timerInterval = setInterval(calculateTimeRemaining, 1000);
-
-    // Clear the interval when the component is unmounted
-    return () => clearInterval(timerInterval);
-  }, []); // Empty dependency array for one-time memoization
+    fetchEventsData();
+  }, []);
 
   return (
     <section id="events" className="px-2 bg-gradient-to-r from-green-900 to-yellow-900 py-8 md:py-12 text-white">
-                  <div className="container mx-auto">
+      <div className="container mx-auto">
         <div className="text-center mb-6 md:mb-8">
           <h2 className="text-4xl md:text-3xl lg:text-4xl font-bold">Upcoming Events</h2>
           <p className="text-gray-200 text-sm md:text-base">Join us for these special occasions.</p>
@@ -121,3 +110,4 @@ const EventsSection: React.FC = () => {
 };
 
 export default EventsSection;
+

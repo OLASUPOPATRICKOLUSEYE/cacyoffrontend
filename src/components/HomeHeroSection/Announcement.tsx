@@ -1,3 +1,4 @@
+"use client";
 // types.ts
 export interface Announcement {
   title: string;
@@ -8,7 +9,7 @@ export interface Announcement {
 
 import React, { useEffect, useState } from 'react';
 import client from '../../lib/client'; // Adjust the import path based on your project structure
-import { Announcement } from '../../types'; // Adjust the import path based on your project structure
+// import { Announcement } from '../../types'; // Adjust the import path based on your project structure
 
 
 const Announcements: React.FC = () => {

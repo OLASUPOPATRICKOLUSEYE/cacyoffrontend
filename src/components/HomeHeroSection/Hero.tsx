@@ -1,23 +1,28 @@
-"use client";
+"use client"
 // /src/components/HomeHeroSection/HeroSection.tsx
 import React, { useEffect, useState } from 'react';
-import sanityClient from '@sanity/client';
+import client from '../../lib/client';
 
-const client = sanityClient({
-  projectId: 'inrjwceq',
-  dataset: 'production',
-  apiVersion: '2023-03-04',
-  useCdn: true,
-  token: 'skOTqBGSpzfMfvzGJzlBoYfPbZp61FOHn2EYkWY7sCQOUG5MBunDP3dSTwBpVz6H8JbPAcqnBdiNpkCmkXIwX5f5L8voQRtbiZRjO2TR5NJGob579Q2JZBv4KwWy9dbRQa39RZ98dMTZ4dSgRHWVLlJZjwAVommJ1WZuBRaxjm8Ya245eGXr',
-});
+interface HeroSectionData {
+  backgroundColors: string[];
+  welcomeMessage: {
+    title: string;
+    subtitle: string;
+    description: string;
+  };
+  ctaButton: {
+    link: string;
+    text: string;
+  };
+}
 
 const HeroSection: React.FC = () => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<HeroSectionData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await client.fetch('*[_type == "heroSection"][0]');
+        const result = await client.fetch<HeroSectionData>('*[_type == "heroSection"][0]');
         setData(result);
       } catch (error) {
         console.error('Error fetching data from Sanity:', error);

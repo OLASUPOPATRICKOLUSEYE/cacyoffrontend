@@ -1,46 +1,39 @@
-// components/CommunitySection.js
-import React from 'react';
+"use client";
+// components/CommunitySection.tsx
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import client from '../../lib/client';
 
-const CommunitySection = () => {
+interface Testimonial {
+  content: string;
+  author: string;
+}
 
-    const testimonials = [
-        {
-          author: 'John Doe',
-          content: 'Being a part of this community has truly enriched my spiritual journey. The warmth and love I experience here are unparalleled.',
-        },
-        {
-          author: 'Jane Smith',
-          content: 'The sense of belonging and fellowship in this church is incredible. I have made lifelong friends and found a second family here.',
-        },
-        {
-          author: 'Zach Pascal',
-          content: 'The sense of belonging and fellowship in this church is incredible. I have made lifelong friends and found a second family here.',
-        },
-        // Add more testimonials as needed
-      ];
-    
+interface PhotoGallery {
+  title: string;
+  images: string[];
+}
 
-      const photoGalleries = [
-        {
-          title: 'Sunday Worship',
-          images: ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image1.jpg'],
-        },
-        {
-          title: 'Outreach Events',
-          images: ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image1.jpg'],
-        },
-        // Add more galleries as needed
-      ];
+const CommunitySection: React.FC = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [photoGalleries, setPhotoGalleries] = useState<PhotoGallery[]>([]);
+
+  useEffect(() => {
+    client
+      .fetch<{ testimonials: Testimonial[]; photoGalleries: PhotoGallery[] }>(
+        '*[_type == "communitySection"][0]{testimonials[], photoGalleries[]}'
+      )
+      .then((data:any) => {
+        setTestimonials(data.testimonials);
+        setPhotoGalleries(data.photoGalleries);
+      })
+      .catch((error:any) => console.error('Error fetching community data from Sanity:', error));
+  }, []);
 
   return (
     <section id="community" className="px-2 bg-gradient-to-r from-yellow-500 to-red-500 py-8 md:py-12 text-white">
       <div className="container mx-auto">
-        <div className="text-center mb-6 md:mb-8">
-          <h2 className="text-4xl md:text-3xl lg:text-4xl font-bold">Community</h2>
-          <p className="text-gray-200 text-sm md:text-base">Discover what our members have to say and glimpse into our community life.</p>
-        </div>
-
+        {/* ... (rest of the component) */}
         {/* Testimonials */}
         <div className="mb-6 md:mb-8">
           <h3 className="text-xl md:text-2xl font-bold mb-4">Testimonials</h3>
@@ -53,8 +46,6 @@ const CommunitySection = () => {
             ))}
           </div>
         </div>
-
-
         {/* Photo Galleries */}
         {photoGalleries.map((gallery, index) => (
           <div key={index} className="mb-6 md:mb-8">
@@ -65,8 +56,8 @@ const CommunitySection = () => {
                   <Image
                     src={`/images/${image}`}
                     alt={`${gallery.title} ${imageIndex + 1}`}
-                    width={400} // Set your desired width
-                    height={300} // Set your desired height
+                    width={400}
+                    height={300}
                     objectFit="cover"
                   />
                 </div>
