@@ -15,28 +15,28 @@ const sermonsData: Sermon[] = [
     title: 'Sermon 1',
     speaker: 'Pastor John Doe',
     date: '2023-01-01',
-    videoSrc: '/video/How to Compress a Video File without Losing Quality How to Make Video Files Smaller.mp4'
+    videoSrc: '/public/video/How to Compress a Video File without Losing Quality How to Make Video Files Smaller.mp4'
   },
   {
     id: 2,
     title: 'Sermon 2',
     speaker: 'Pastor Jane Smith',
     date: '2023-02-01',
-    videoSrc: '/video/How to Quickly Compress Large Video Files via VLC - GIZBOT.mp4'
+    videoSrc: '/public/video/How to Quickly Compress Large Video Files via VLC - GIZBOT.mp4'
   },
   {
     id: 3,
     title: 'Sermon 3',
     speaker: 'Pastor John Doe',
     date: '2023-01-01',
-    videoSrc: '/video/How to reduce a video file size.mp4'
+    videoSrc: '/public/video/How to reduce a video file size.mp4'
   },
   {
     id: 4,
     title: 'Sermon 4',
     speaker: 'Pastor Jane Smith',
     date: '2023-02-01',
-    videoSrc: '/video/How to reduce a video file size.mp4'
+    videoSrc: '/public/video/How to reduce a video file size.mp4'
   },  
 ];
 
