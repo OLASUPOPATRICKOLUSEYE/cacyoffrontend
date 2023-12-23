@@ -35,9 +35,14 @@ import gallery from './familygallery/gallery';
 // All In Donation
 import donation from './donation/donation';
 
+// All In Membership
+import personalinfo from './membership/personalinfo';
+import educationinfo from './membership/educationinfo';
+import spiritualinfo from './membership/spiritualinfo';
+import soulwining from './membership/soulwining';
+
 // All In Footer
 import footer from './footer';
-
 
 export const schemaTypes = [
     
@@ -75,5 +80,9 @@ export const schemaTypes = [
     // donation
     donation,
 
-    
+    //.    membership
+    personalinfo,
+    educationinfo,
+    spiritualinfo,
+    soulwining,
 ]

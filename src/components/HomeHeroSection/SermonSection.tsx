@@ -1,3 +1,4 @@
+"use client";
 // pages/audio.tsx
 import React, { useRef } from 'react';
 
