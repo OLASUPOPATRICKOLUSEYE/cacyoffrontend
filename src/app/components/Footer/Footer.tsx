@@ -1,7 +1,7 @@
 "use client";
 // components/Footer.tsx
 import React, { useEffect, useState } from 'react';
-import sanityClient from '../../lib/sanityClient';
+import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
 
 interface FooterLink {
   text: string;
@@ -26,7 +26,8 @@ const Footer: React.FC = () => {
   useEffect(() => {
     const fetchFooterData = async () => {
       try {
-        const response = await sanityClient.fetch<FooterData>(
+        // Fetch footer data from Sanity using the shared client instance
+        const response = await client.fetch<FooterData>(
           `*[_type == "footer"][0] {
             sections[]->{
               title,

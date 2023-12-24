@@ -1,7 +1,7 @@
 "use client";
 // components/EventsSection.tsx
 import React, { useState, useEffect } from 'react';
-import sanityClient from '../../lib/sanityClient';
+import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
 
 // TypeScript Types
 interface Event {
@@ -27,8 +27,8 @@ const EventsSection: React.FC = () => {
   useEffect(() => {
     const fetchEventsData = async () => {
       try {
-        // Fetch events data from the backend
-        const response = await sanityClient.fetch('*[_type == "event"]{title, date, time, location, description}');
+        // Fetch events data from the backend using the shared client instance
+        const response = await client.fetch('*[_type == "event"]{title, date, time, location, description}');
         const now = new Date();
 
         // Calculate time remaining for each event

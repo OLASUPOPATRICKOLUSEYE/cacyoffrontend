@@ -1,7 +1,7 @@
 "use client";
 // components/ServicesSection.tsx
 import React, { useState, useEffect } from 'react';
-import sanityClient from '../../lib/sanityClient';
+import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
 
 // TypeScript Types
 interface ServiceCategory {
@@ -21,7 +21,8 @@ const ServicesSection: React.FC = () => {
   useEffect(() => {
     const fetchServicesData = async () => {
       try {
-        const response = await sanityClient.fetch('*[_type == "servicesSection"]{title, description, services}');
+        // Fetch services data from Sanity using the shared client instance
+        const response = await client.fetch('*[_type == "servicesSection"]{title, description, services}');
         setServicesData(response);
       } catch (error) {
         console.error('Error fetching services data:', error);

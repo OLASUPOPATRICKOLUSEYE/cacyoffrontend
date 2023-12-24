@@ -1,7 +1,7 @@
 "use client";
 // pages/audio.tsx
 import React, { useRef, useEffect, useState } from 'react';
-import sanityClient from '../../lib/sanityClient';
+import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
 
 interface Sermon {
   _id: string;
@@ -18,7 +18,8 @@ const SermonsSection: React.FC = () => {
   useEffect(() => {
     const fetchSermons = async () => {
       try {
-        const data = await sanityClient.fetch('*[_type == "sermon"]{_id, title, speaker, date, "audioSrc": audioSrc.asset->url}');
+        // Fetch sermons data from Sanity using the shared client instance
+        const data = await client.fetch('*[_type == "sermon"]{_id, title, speaker, date, "audioSrc": audioSrc.asset->url}');
         setSermons(data);
       } catch (error) {
         console.error('Error fetching sermons from Sanity:', error);

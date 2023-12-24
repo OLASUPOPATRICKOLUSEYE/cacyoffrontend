@@ -2,7 +2,7 @@
 // components/CommunitySection.tsx
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import sanityClient from '../../lib/sanityClient';
+import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
 
 interface Testimonial {
   content: string;
@@ -19,15 +19,15 @@ const CommunitySection: React.FC = () => {
   const [photoGalleries, setPhotoGalleries] = useState<PhotoGallery[]>([]);
 
   useEffect(() => {
-    sanityClient
+    client
       .fetch<{ testimonials: Testimonial[]; photoGalleries: PhotoGallery[] }>(
         '*[_type == "communitySection"][0]{testimonials[], photoGalleries[]}'
       )
-      .then((data:any) => {
+      .then((data: any) => {
         setTestimonials(data.testimonials);
         setPhotoGalleries(data.photoGalleries);
       })
-      .catch((error:any) => console.error('Error fetching community data from Sanity:', error));
+      .catch((error: any) => console.error('Error fetching community data from Sanity:', error));
   }, []);
 
   return (

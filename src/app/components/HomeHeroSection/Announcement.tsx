@@ -1,29 +1,25 @@
 "use client";
 // components/HomeHeroSection/Announcements.tsx
 import React, { useEffect, useState } from 'react';
-import sanityClient from '../../lib/sanityClient';
-// import { Announcement } from '../../types'; // Adjust the import path based on your project structure
+import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
 
-// ../../types/types.ts
 export interface Announcement {
   title: string;
   content: string;
   // Add any other properties if present in your Sanity schema
 }
 
-
-
 const Announcements: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   useEffect(() => {
-    // Example query to fetch announcements from Sanity using sanityClient
-    sanityClient.fetch('*[_type == "announcement"]{title, content}')
+    // Example query to fetch announcements from Sanity using the shared client instance
+    client.fetch('*[_type == "announcement"]{title, content}')
       .then((data: Announcement[]) => {
         console.log('Fetched data:', data);  // Log the fetched data to the console
         setAnnouncements(data);
       })
-      .catch((error) => console.error('Error fetching announcements:', error));
+      .catch((error:any) => console.error('Error fetching announcements:', error));
   }, []);
 
   return (
