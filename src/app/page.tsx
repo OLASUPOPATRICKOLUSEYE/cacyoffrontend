@@ -5,10 +5,8 @@ const queryClient = new QueryClient();
 
 const Home = () => {
   return (   
-    <QueryClientProvider client={queryClient}>    
-    <>      
-    <HomePage/>
-    </>    
+    <QueryClientProvider client={queryClient}>        
+    <HomePage/>    
     </QueryClientProvider>
   );
 };
