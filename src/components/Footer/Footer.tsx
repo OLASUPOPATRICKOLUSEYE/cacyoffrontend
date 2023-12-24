@@ -1,8 +1,8 @@
 // components/Footer.tsx
-"use client"
-
-import React, { useEffect, useState } from 'react';
+"use client";
+import React from 'react';
 import client from '../../lib/client';
+import { useQuery } from 'react-query';
 
 interface FooterLink {
   text: string;
@@ -19,31 +19,30 @@ interface FooterData {
   copyright: string;
 }
 
+const fetchFooterData = async () => {
+  const response = await client.fetch<FooterData>('*[_type == "footer"][0]');
+  return response;
+};
+
 const Footer: React.FC = () => {
-  const [footerData, setFooterData] = useState<FooterData | null>(null);
+  const { data: footerData, isLoading, isError } = useQuery('footerData', fetchFooterData);
 
-  useEffect(() => {
-    const fetchFooterData = async () => {
-      try {
-        const response = await client.fetch<FooterData>('*[_type == "footer"][0]');
-        setFooterData(response);
-      } catch (error) {
-        console.error('Error fetching footer data:', error);
-      }
-    };
+  if (isLoading) {
+    return <div className="bg-blue-900 text-white text-center rounded">Loading...</div>;
+  }
 
-    fetchFooterData();
-  }, []);
+  if (isError) {
+    return <div className="bg-red-900 text-white text-center rounded">Error fetching data</div>;
+  }
 
   if (!footerData) {
-    return <div>Loading...</div>; // You can replace this with a loading indicator
+    return null; // Or handle accordingly
   }
 
   const { sections, copyright } = footerData;
 
   return (
     <footer className="bg-white text-center justify-center dark:bg-gray-900">
-      {/* Rest of your code remains unchanged */}
       <div className="mx-auto w-full max-w-screen-xl">
         <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
           {sections.map((section, index) => (
