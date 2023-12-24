@@ -1,4 +1,3 @@
-// components/Footer.tsx
 "use client";
 // components/Footer.tsx
 import React, { useEffect, useState } from 'react';
@@ -24,28 +23,6 @@ const Footer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchFooterData = async () => {
-  //     try {
-  //       const response = await client.fetch<FooterData>(     `*[_type == "footer"][0] {
-  //         sections[]->{
-  //           title,
-  //           links[]->{ text, url }
-  //         },
-  //         copyright
-  //       }`);
-  //       setFooterData(response);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //       setIsError(true);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchFooterData();
-  // }, []); // Empty dependency array ensures the effect runs only once, similar to componentDidMount
-
   useEffect(() => {
     const fetchFooterData = async () => {
       try {
@@ -58,18 +35,24 @@ const Footer: React.FC = () => {
             copyright
           }`
         );
+        console.log('Response from Sanity:', response);
+
+        // Check if the response has the expected structure
+        if (!response || !response.sections || !response.copyright) {
+          throw new Error('Invalid response structure');
+        }
+
         setFooterData(response);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data from Sanity:', error);
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
     };
-  
+
     fetchFooterData();
   }, []);
-  
 
   if (isLoading) {
     return <div className="bg-blue-900 text-white text-center rounded">Loading...</div>;
