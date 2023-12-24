@@ -1,5 +1,5 @@
 // frontend/client.js
-import {createClient} from '@sanity/client';
+import { createClient } from '@sanity/client';
 
 const client = createClient({
   projectId: 'inrjwceq',
