@@ -1,7 +1,7 @@
 "use client";
 // components/Footer.tsx
 import React, { useEffect, useState } from 'react';
-import client from '../../lib/client';
+import sanityClient from '../../lib/sanityClient';
 
 interface FooterLink {
   text: string;
@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
   useEffect(() => {
     const fetchFooterData = async () => {
       try {
-        const response = await client.fetch<FooterData>(
+        const response = await sanityClient.fetch<FooterData>(
           `*[_type == "footer"][0] {
             sections[]->{
               title,

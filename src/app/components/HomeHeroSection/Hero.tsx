@@ -1,7 +1,7 @@
 "use client"
 // /src/components/HomeHeroSection/HeroSection.tsx
 import React, { useEffect, useState } from 'react';
-import client from '../../lib/client';
+import sanityClient from '../../lib/sanityClient';
 
 interface HeroSectionData {
   backgroundColors: string[];
@@ -22,7 +22,7 @@ const HeroSection: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await client.fetch<HeroSectionData>('*[_type == "heroSection"][0]');
+        const result = await sanityClient.fetch<HeroSectionData>('*[_type == "heroSection"][0]');
         setData(result);
       } catch (error) {
         console.error('Error fetching data from Sanity:', error);

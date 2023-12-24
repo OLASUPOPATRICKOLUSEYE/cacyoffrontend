@@ -2,7 +2,7 @@
 // components/CommunitySection.tsx
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import client from '../../lib/client';
+import sanityClient from '../../lib/sanityClient';
 
 interface Testimonial {
   content: string;
@@ -19,7 +19,7 @@ const CommunitySection: React.FC = () => {
   const [photoGalleries, setPhotoGalleries] = useState<PhotoGallery[]>([]);
 
   useEffect(() => {
-    client
+    sanityClient
       .fetch<{ testimonials: Testimonial[]; photoGalleries: PhotoGallery[] }>(
         '*[_type == "communitySection"][0]{testimonials[], photoGalleries[]}'
       )

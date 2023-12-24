@@ -1,7 +1,7 @@
 "use client";
 // components/ServicesSection.tsx
 import React, { useState, useEffect } from 'react';
-import client from '../../lib/client';
+import sanityClient from '../../lib/sanityClient';
 
 // TypeScript Types
 interface ServiceCategory {
@@ -21,7 +21,7 @@ const ServicesSection: React.FC = () => {
   useEffect(() => {
     const fetchServicesData = async () => {
       try {
-        const response = await client.fetch('*[_type == "servicesSection"]{title, description, services}');
+        const response = await sanityClient.fetch('*[_type == "servicesSection"]{title, description, services}');
         setServicesData(response);
       } catch (error) {
         console.error('Error fetching services data:', error);

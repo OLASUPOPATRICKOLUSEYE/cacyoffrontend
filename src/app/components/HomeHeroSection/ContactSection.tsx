@@ -1,7 +1,7 @@
 "use client";
 // components/ContactSection.tsx
 import React, { useEffect, useState } from 'react';
-import client from '../../lib/client';
+import sanityClient from '../../lib/sanityClient';
 
 interface ContactSectionProps {
   contactSectionData: {

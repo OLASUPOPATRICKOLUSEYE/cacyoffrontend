@@ -1,7 +1,7 @@
 "use client";
 // components/EventsSection.tsx
 import React, { useState, useEffect } from 'react';
-import client from '../../lib/client';
+import sanityClient from '../../lib/sanityClient';
 
 // TypeScript Types
 interface Event {
@@ -28,11 +28,11 @@ const EventsSection: React.FC = () => {
     const fetchEventsData = async () => {
       try {
         // Fetch events data from the backend
-        const response = await client.fetch('*[_type == "event"]{title, date, time, location, description}');
+        const response = await sanityClient.fetch('*[_type == "event"]{title, date, time, location, description}');
         const now = new Date();
 
         // Calculate time remaining for each event
-        const updatedTimers: Timer[] = response.map((event:any) => {
+        const updatedTimers: Timer[] = response.map((event: any) => {
           const eventDate = new Date(`${event.date} ${event.time}`);
           const timeDifference = eventDate.getTime() - now.getTime();
 
@@ -110,4 +110,3 @@ const EventsSection: React.FC = () => {
 };
 
 export default EventsSection;
-
