@@ -24,16 +24,40 @@ const Footer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  // useEffect(() => {
+  //   const fetchFooterData = async () => {
+  //     try {
+  //       const response = await client.fetch<FooterData>(     `*[_type == "footer"][0] {
+  //         sections[]->{
+  //           title,
+  //           links[]->{ text, url }
+  //         },
+  //         copyright
+  //       }`);
+  //       setFooterData(response);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //       setIsError(true);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchFooterData();
+  // }, []); // Empty dependency array ensures the effect runs only once, similar to componentDidMount
+
   useEffect(() => {
     const fetchFooterData = async () => {
       try {
-        const response = await client.fetch<FooterData>(     `*[_type == "footer"][0] {
-          sections[]->{
-            title,
-            links[]->{ text, url }
-          },
-          copyright
-        }`);
+        const response = await client.fetch<FooterData>(
+          `*[_type == "footer"][0] {
+            sections[]->{
+              title,
+              links[]->{ text, url }
+            },
+            copyright
+          }`
+        );
         setFooterData(response);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -42,9 +66,10 @@ const Footer: React.FC = () => {
         setIsLoading(false);
       }
     };
-
+  
     fetchFooterData();
-  }, []); // Empty dependency array ensures the effect runs only once, similar to componentDidMount
+  }, []);
+  
 
   if (isLoading) {
     return <div className="bg-blue-900 text-white text-center rounded">Loading...</div>;
