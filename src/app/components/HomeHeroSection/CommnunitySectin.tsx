@@ -7,6 +7,12 @@ import client from '../../lib/client'; // Import your shared createClient instan
 interface Testimonial {
   content: string;
   author: string;
+  image: {
+    asset: {
+      url: string;
+    };
+    alt: string;
+  };
 }
 
 interface PhotoGallery {
@@ -24,8 +30,8 @@ const CommunitySection: React.FC = () => {
         '*[_type == "communitySection"][0]{testimonials[], photoGalleries[]}'
       )
       .then((data: any) => {
-        setTestimonials(data.testimonials);
-        setPhotoGalleries(data.photoGalleries);
+        setTestimonials(data.testimonials || []); // Initialize with an empty array
+        setPhotoGalleries(data.photoGalleries || []); // Initialize with an empty array
       })
       .catch((error: any) => console.error('Error fetching community data from Sanity:', error));
   }, []);
@@ -38,33 +44,41 @@ const CommunitySection: React.FC = () => {
         <div className="mb-6 md:mb-8">
           <h3 className="text-xl md:text-2xl font-bold mb-4">Testimonials</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-red-700 p-4 rounded-lg">
-                <p className="text-gray-200">{testimonial.content}</p>
-                <p className="text-gray-300 mt-2">- {testimonial.author}</p>
+        {testimonials.map((testimonial, index) => (
+          <div key={index} className="bg-red-700 p-4 rounded-lg">
+            {testimonial.image && testimonial.image.asset && (
+              <Image
+                src={testimonial.image.asset.url}
+                alt={testimonial.image.alt}
+                width={100}
+                height={100}
+                className="rounded-full"
+              />
+            )}
+            <p className="text-gray-200">{testimonial.content}</p>
+            <p className="text-gray-300 mt-2">- {testimonial.author}</p>
+          </div>
+        ))}
+    </div>
+        </div>
+        {photoGalleries.map((gallery, index) => (
+        <div key={index} className="mb-6 md:mb-8">
+          <h3 className="text-xl md:text-2xl font-bold mb-4">{gallery.title}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {gallery.images && gallery.images.length > 0 && gallery.images.map((image, imageIndex) => (
+              <div key={imageIndex} className="w-full h-48 overflow-hidden rounded-lg">
+                <Image
+                  src={`/images/${image}`}
+                  alt={`${gallery.title} ${imageIndex + 1}`}
+                  width={400}
+                  height={300}
+                  objectFit="cover"
+                />
               </div>
             ))}
           </div>
         </div>
-        {/* Photo Galleries */}
-        {photoGalleries.map((gallery, index) => (
-          <div key={index} className="mb-6 md:mb-8">
-            <h3 className="text-xl md:text-2xl font-bold mb-4">{gallery.title}</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {gallery.images.map((image, imageIndex) => (
-                <div key={imageIndex} className="w-full h-48 overflow-hidden rounded-lg">
-                  <Image
-                    src={`/images/${image}`}
-                    alt={`${gallery.title} ${imageIndex + 1}`}
-                    width={400}
-                    height={300}
-                    objectFit="cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+      ))}
       </div>
     </section>
   );
