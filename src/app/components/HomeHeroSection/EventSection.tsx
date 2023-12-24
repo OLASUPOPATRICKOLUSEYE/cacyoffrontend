@@ -1,7 +1,7 @@
 "use client";
 // components/EventsSection.tsx
 import React, { useState, useEffect } from 'react';
-import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
+import client from '../../lib/client'; // Import your shared createClient instance
 
 // TypeScript Types
 interface Event {

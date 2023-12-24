@@ -2,7 +2,7 @@
 // components/CommunitySection.tsx
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import client from '../../../app/lib/sanityClient'; // Import your shared createClient instance
+import client from '../../lib/client'; // Import your shared createClient instance
 
 interface Testimonial {
   content: string;
