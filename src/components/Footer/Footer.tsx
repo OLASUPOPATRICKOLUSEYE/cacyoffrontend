@@ -1,8 +1,8 @@
 // components/Footer.tsx
 "use client";
-import React from 'react';
+// components/Footer.tsx
+import React, { useEffect, useState } from 'react';
 import client from '../../lib/client';
-import { useQuery } from 'react-query';
 
 interface FooterLink {
   text: string;
@@ -19,13 +19,32 @@ interface FooterData {
   copyright: string;
 }
 
-const fetchFooterData = async () => {
-  const response = await client.fetch<FooterData>('*[_type == "footer"][0]');
-  return response;
-};
-
 const Footer: React.FC = () => {
-  const { data: footerData, isLoading, isError } = useQuery('footerData', fetchFooterData);
+  const [footerData, setFooterData] = useState<FooterData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const fetchFooterData = async () => {
+      try {
+        const response = await client.fetch<FooterData>(     `*[_type == "footer"][0] {
+          sections[]->{
+            title,
+            links[]->{ text, url }
+          },
+          copyright
+        }`);
+        setFooterData(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFooterData();
+  }, []); // Empty dependency array ensures the effect runs only once, similar to componentDidMount
 
   if (isLoading) {
     return <div className="bg-blue-900 text-white text-center rounded">Loading...</div>;
