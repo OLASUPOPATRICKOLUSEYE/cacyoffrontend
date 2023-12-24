@@ -1,5 +1,5 @@
 // components/Footer.tsx
-// use client
+"use client"
 
 import React, { useEffect, useState } from 'react';
 import client from '../../lib/client';
