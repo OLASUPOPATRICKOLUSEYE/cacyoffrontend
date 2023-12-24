@@ -1,4 +1,4 @@
-// sanity/schemas/communitySection.js
+// schemas/communitySection.js
 export default {
   name: 'communitySection',
   title: 'Community Section',
@@ -12,9 +12,27 @@ export default {
         {
           type: 'object',
           fields: [
-            { name: 'author', title: 'Author', type: 'string' },
             { name: 'content', title: 'Content', type: 'text' },
-            { name: 'image', title: 'Image', type: 'image' }, // Add image field
+            { name: 'author', title: 'Author', type: 'string' },
+            {
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: {
+                hotspot: true,
+              },
+              fields: [
+                {
+                  name: 'alt',
+                  title: 'Alt Text',
+                  type: 'string',
+                  description: 'Alternative text for screen readers',
+                  options: {
+                    isHighlighted: true,
+                  },
+                },
+              ],
+            },
           ],
         },
       ],
@@ -32,7 +50,25 @@ export default {
               name: 'images',
               title: 'Images',
               type: 'array',
-              of: [{ type: 'string' }],
+              of: [
+                {
+                  type: 'image',
+                  options: {
+                    hotspot: true,
+                  },
+                  fields: [
+                    {
+                      name: 'alt',
+                      title: 'Alt Text',
+                      type: 'string',
+                      description: 'Alternative text for screen readers',
+                      options: {
+                        isHighlighted: true,
+                      },
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
