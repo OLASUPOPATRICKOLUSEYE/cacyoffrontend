@@ -1,7 +1,7 @@
 "use client";
 // components/Footer.tsx
 import React, { useEffect, useState } from 'react';
-import client from '../../lib/client'; // Import your shared createClient instance
+import client from '../../lib/client';
 
 interface FooterLink {
   text: string;
@@ -18,53 +18,24 @@ interface FooterData {
   copyright: string;
 }
 
-const Footer: React.FC = () => {
+const Footer = () => {
   const [footerData, setFooterData] = useState<FooterData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchFooterData = async () => {
       try {
-        // Fetch footer data from Sanity using the shared client instance
-        const response = await client.fetch<FooterData>(
-          `*[_type == "footer"][0] {
-            sections[]->{
-              title,
-              links[]->{ text, url }
-            },
-            copyright
-          }`
-        );
-        console.log('Response from Sanity:', response);
-
-        // Check if the response has the expected structure
-        if (!response || !response.sections || !response.copyright) {
-          throw new Error('Invalid response structure');
-        }
-
+        const response = await client.fetch('*[_type == "footer"][0]');
         setFooterData(response);
       } catch (error) {
-        console.error('Error fetching data from Sanity:', error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
+        console.error('Error fetching footer data:', error);
       }
     };
 
     fetchFooterData();
   }, []);
 
-  if (isLoading) {
-    return <div className="bg-blue-900 text-white text-center rounded">Loading...</div>;
-  }
-
-  if (isError) {
-    return <div className="bg-red-900 text-white text-center rounded">Error fetching data</div>;
-  }
-
   if (!footerData) {
-    return null; // Or handle accordingly
+    return <div>Loading...</div>; // You can replace this with a loading indicator
   }
 
   const { sections, copyright } = footerData;
