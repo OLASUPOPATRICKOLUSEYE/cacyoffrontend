@@ -22,6 +22,8 @@ export default async function submitForm(req: NextApiRequest, res: NextApiRespon
       },
     });
 
+    console.log('Form data saved to Sanity:', response);
+
     res.status(200).json({ success: true, response });
   } catch (error) {
     console.error('Error saving form data to Sanity:', error);
