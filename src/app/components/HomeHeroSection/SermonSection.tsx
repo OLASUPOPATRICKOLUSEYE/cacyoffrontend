@@ -1,7 +1,7 @@
 "use client";
 // pages/audio.tsx
 import React, { useRef, useEffect, useState } from 'react';
-import client from '../../lib/client'; // Import your shared createClient instance
+import {client} from '../../lib/client'; // Import your shared createClient instance
 
 interface Sermon {
   _id: string;

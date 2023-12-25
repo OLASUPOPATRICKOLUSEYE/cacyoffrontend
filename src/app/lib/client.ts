@@ -1,3 +1,5 @@
+// import { urlFor } from './client';
+
 // frontend/client.js
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
@@ -11,8 +13,8 @@ const client = createClient({
   token: process.env.NEXT_JS_APP_SANITY_TOKEN,
 });
 
-export default client;
-
 const builder = imageUrlBuilder(client);
 
-export const urlFor = (source:any) => builder.image(source);
+export { client, builder, imageUrlBuilder, 
+  // urlFor 
+};

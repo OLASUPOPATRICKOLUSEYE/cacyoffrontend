@@ -1,7 +1,7 @@
 "use client"
 // /src/components/HomeHeroSection/HeroSection.tsx
 import React, { useEffect, useState } from 'react';
-import client from '../../lib/client'; // Import your shared createClient instance
+import {client} from '../../lib/client'; // Import your shared createClient instance
 
 interface HeroSectionData {
   backgroundColors: string[];

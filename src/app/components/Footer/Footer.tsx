@@ -1,7 +1,7 @@
 "use client";
 // components/Footer.tsx
 import React, { useEffect, useState } from 'react';
-import client from '../../lib/client';
+import {client} from '../../lib/client';
 
 interface FooterLink {
   text: string;

@@ -1,7 +1,9 @@
 "use client";
-// components/ContactSection.tsx
+// src/components/ContactSection.tsx
+
 import React, { useEffect, useState } from 'react';
-import client from '../../lib/client'; // Import your shared createClient instance
+import { client } from '../../lib/client';
+
 
 interface ContactSectionProps {
   contactSectionData: {
@@ -41,9 +43,31 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+
+    try {
+      const response = await fetch('/api/submitForm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        console.log('Form submitted successfully!');
+        // Optionally, you can handle success UI updates here
+      } else {
+        console.error('Form submission failed:', response.statusText);
+        // Optionally, you can handle error UI updates here
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Optionally, you can handle error UI updates here
+    }
+
+    // Reset the form data
     setFormData({
       name: '',
       contact: '',
@@ -146,7 +170,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
         </div>
       </div>
     </section>
-  );
+    );
 };
 
 export default ContactSection;

@@ -7,6 +7,7 @@ specifiers:
   '@types/react': ^18.2.45
   '@types/react-dom': ^18.2.18
   autoprefixer: ^10.4.16
+  dotenv: ^16.3.1
   eslint: ^8.56.0
   eslint-config-next: 14.0.4
   flowbite: ^2.2.1
@@ -24,6 +25,7 @@ specifiers:
 dependencies:
   '@sanity/client': 6.10.0
   '@sanity/image-url': 1.0.2
+  dotenv: 16.3.1
   flowbite: 2.2.1
   framer-motion: 10.16.16_biqbaboplfbrettd7655fr4n2y
   next: 14.0.4_biqbaboplfbrettd7655fr4n2y
@@ -1135,6 +1137,11 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /dotenv/16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /eastasianwidth/0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}

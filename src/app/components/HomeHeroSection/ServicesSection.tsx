@@ -1,7 +1,7 @@
 "use client";
 // components/ServicesSection.tsx
 import React, { useState, useEffect } from 'react';
-import client from '../../lib/client'; // Import your shared createClient instance
+import {client} from '../../lib/client'; // Import your shared createClient instance
 
 // TypeScript Types
 interface ServiceCategory {
