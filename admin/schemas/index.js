@@ -43,6 +43,7 @@ import soulwining from './membership/soulwining';
 
 // All In Footer
 import footer from './footer';
+import contactForm from './contactForm';
 
 export const schemaTypes = [
     
@@ -85,4 +86,7 @@ export const schemaTypes = [
     educationinfo,
     spiritualinfo,
     soulwining,
+
+    // Save Data
+    contactForm
 ]

@@ -11,15 +11,13 @@ export default async function submitForm(req: NextApiRequest, res: NextApiRespon
   const { name, contact, email, message } = req.body;
 
   try {
-    // Save the form data to Sanity
+    // Save the form data to Sanity using the new schema
     const response = await client.create({
-      _type: 'contactSection',
-      form: {
-        name,
-        contact,
-        email,
-        message,
-      },
+      _type: 'contactForm',
+      name,
+      contact,
+      email,
+      message,
     });
 
     console.log('Form data saved to Sanity:', response);

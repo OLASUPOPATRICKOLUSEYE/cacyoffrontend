@@ -168,8 +168,8 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
           ></iframe>
         </div>
       </div>
-    </section>
-  );
+    </section>  );
 };
 
 export default ContactSection;
+
