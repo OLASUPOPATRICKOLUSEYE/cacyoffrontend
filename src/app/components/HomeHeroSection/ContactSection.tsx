@@ -47,7 +47,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/submitForm', {
+      const response = await fetch('/api/contactSection', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
