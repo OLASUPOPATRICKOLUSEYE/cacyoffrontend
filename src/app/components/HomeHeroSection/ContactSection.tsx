@@ -75,7 +75,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    className="text-blue-900 w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                     required
                   />
                 </div>
@@ -89,7 +89,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="contact"
                     value={formData.contact}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 text-blue-900 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                     required
                   />
                 </div>
@@ -103,7 +103,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-2 border text-blue-900 rounded-md focus:outline-none focus:border-blue-500"
                     required
                   />
                 </div>
@@ -116,7 +116,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 text-blue-900 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                     required
                   ></textarea>
                 </div>
