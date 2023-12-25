@@ -1,4 +1,5 @@
-// schemas/contactSection.js
+// sanity/schemas/contactSection.js
+
 export default {
   name: 'contactSection',
   title: 'Contact Section',
@@ -25,12 +26,9 @@ export default {
       ],
     },
   ],
-  initialValue: {
-    // Optional: Set default values for fields
-  },
   preview: {
     select: {
-      title: 'title',
+      title: 'form.name',
     },
   },
 };

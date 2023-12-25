@@ -1,10 +1,9 @@
 // src/pages/api/submitForm.ts
+
 import { NextApiRequest, NextApiResponse } from 'next';
-import {client} from '../../app/lib/client'
+import { client } from '../lib/client';
 
-
-
-export default async function submitForm(req:any, res:any) {
+export default async function submitForm(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -15,10 +14,12 @@ export default async function submitForm(req:any, res:any) {
     // Save the form data to Sanity
     const response = await client.create({
       _type: 'contactSection',
-      name,
-      contact,
-      email,
-      message,
+      form: {
+        name,
+        contact,
+        email,
+        message,
+      },
     });
 
     res.status(200).json({ success: true, response });

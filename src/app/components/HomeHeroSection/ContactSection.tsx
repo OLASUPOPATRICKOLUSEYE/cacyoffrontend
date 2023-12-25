@@ -4,7 +4,6 @@
 import React, { useEffect, useState } from 'react';
 import { client } from '../../lib/client';
 
-
 interface ContactSectionProps {
   contactSectionData: {
     form?: {
@@ -47,7 +46,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/contactSection', {
+      const response = await fetch('/api/submitForm', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -170,7 +169,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
         </div>
       </div>
     </section>
-    );
+  );
 };
 
 export default ContactSection;
