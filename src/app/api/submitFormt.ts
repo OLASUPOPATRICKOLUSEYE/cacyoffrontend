@@ -1,7 +1,7 @@
-// src/pages/api/submitForm.ts
+// src/app/api/submitForm.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { client } from '../lib/client';
+import { client } from '../../app/lib/client';
 
 export default async function submitForm(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
