@@ -1,27 +1,21 @@
-"use client";
 // components/CommunitySection.tsx
+"use client";
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import {client} from '../../lib/client'; // Import your shared createClient instance
+import { client } from '../../lib/client';
 
 interface Testimonial {
   content: string;
   author: string;
   image: {
-    asset: {
-      url: string;
-    };
-    alt: string;
+    url: string;
   };
 }
 
 interface PhotoGallery {
   title: string;
   images: {
-    asset: {
-      url: string;
-    };
-    alt: string;
+    url: string;
   }[];
 }
 
@@ -35,8 +29,8 @@ const CommunitySection: React.FC = () => {
         '*[_type == "communitySection"][0]{testimonials[], photoGalleries[]}'
       )
       .then((data: any) => {
-        setTestimonials(data.testimonials || []); // Initialize with an empty array
-        setPhotoGalleries(data.photoGalleries || []); // Initialize with an empty array
+        setTestimonials(data.testimonials || []);
+        setPhotoGalleries(data.photoGalleries || []);
       })
       .catch((error: any) => console.error('Error fetching community data from Sanity:', error));
   }, []);
@@ -53,27 +47,29 @@ const CommunitySection: React.FC = () => {
   return (
     <section id="community" className="px-2 bg-gradient-to-r from-yellow-500 to-red-500 py-8 md:py-12 text-white">
       <div className="container mx-auto">
-        {/* ... (rest of the component) */}
+        <h1 className="text-xl md:text-2xl font-bold mb-4">Testimonials / Our Programme</h1>
         {/* Testimonials */}
         <div className="mb-6 md:mb-8">
           <h3 className="text-xl md:text-2xl font-bold mb-4">Testimonials</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-red-700 p-4 rounded-lg">
-              {testimonial.image && testimonial.image.asset && (
-                <Image
-                  src={testimonial.image.asset.url}
-                  alt={testimonial.image.alt}
-                  width={50}
-                  height={50}
-                  className="rounded-full"
-                />
-              )}
-              <p className="text-gray-200">{testimonial.content}</p>
-              <p className="text-gray-300 mt-2">- {testimonial.author}</p>
-            </div>
-          ))}
-
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-200">{testimonial.content}</p>
+                <div className="flex items-center pt-5">
+                  {testimonial.image && (
+                    <Image
+                      src={testimonial.image.url}
+                      width={50}
+                      height={50}
+                      className="rounded-full"
+                      alt=""
+                      objectFit="cover"
+                    />
+                  )}
+                  <p className="text-gray-300 ml-2">- {testimonial.author}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         {/* Sunday Service Galleries */}
@@ -81,17 +77,17 @@ const CommunitySection: React.FC = () => {
           <div key={index} className="mb-6 md:mb-8">
             <h3 className="text-xl md:text-2xl font-bold mb-4">{gallery.title}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {gallery.images && gallery.images.length > 0 && gallery.images.map((image, imageIndex) => (
-              <div key={imageIndex} className="w-full h-48 overflow-hidden rounded-lg">
-                <Image
-                  src={image.asset.url}
-                  alt={image.alt}
-                  width={400}
-                  height={300}
-                  objectFit="cover"
-                />
-              </div>
-            ))}
+              {gallery.images && gallery.images.length > 0 && gallery.images.map((image, imageIndex) => (
+                <div key={imageIndex} className="w-full h-48 overflow-hidden rounded-lg">
+                  <Image
+                    src={image.url}
+                    alt=""
+                    width={400}
+                    height={300}
+                    objectFit="cover"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         ))}
@@ -101,16 +97,16 @@ const CommunitySection: React.FC = () => {
             <h3 className="text-xl md:text-2xl font-bold mb-4">{gallery.title}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {gallery.images && gallery.images.length > 0 && gallery.images.map((image, imageIndex) => (
-              <div key={imageIndex} className="w-full h-48 overflow-hidden rounded-lg">
-                <Image
-                  src={image.asset.url}
-                  alt={image.alt}
-                  width={400}
-                  height={300}
-                  objectFit="cover"
-                />
-              </div>
-            ))}
+                <div key={imageIndex} className="w-full h-48 overflow-hidden rounded-lg">
+                  <Image
+                    src={image.url}
+                    alt=""
+                    width={400}
+                    height={300}
+                    objectFit="cover"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         ))}
@@ -119,11 +115,11 @@ const CommunitySection: React.FC = () => {
           <div key={index} className="mb-6 md:mb-8">
             <h3 className="text-xl md:text-2xl font-bold mb-4">{gallery.title}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {gallery.images && gallery.images.length > 0 && gallery.images.map((image, imageIndex) => (
+              {gallery.images && gallery.images.length > 0 && gallery.images.map((image, imageIndex) => (
                 <div key={imageIndex} className="w-full h-48 overflow-hidden rounded-lg">
                   <Image
-                    src={image.asset.url}
-                    alt={image.alt}
+                    src={image.url}
+                    alt=""
                     width={400}
                     height={300}
                     objectFit="cover"

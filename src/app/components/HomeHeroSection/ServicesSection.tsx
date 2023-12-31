@@ -37,7 +37,7 @@ const ServicesSection: React.FC = () => {
       <div className="container mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-4xl font-bold">Our Services</h2>
-          <p className="text-gray-200">Join us for worship and fellowship.</p>
+          <p className="text-gray-200">Join us for weekly worship and fellowship.</p>
         </div>
 
         <div className="flex flex-wrap justify-center">

@@ -31,6 +31,11 @@ export default {
                     isHighlighted: true,
                   },
                 },
+                {
+                  name: 'url',
+                  type: 'url',
+                  title: 'URL',
+                },
               ],
             },
           ],
@@ -65,6 +70,11 @@ export default {
                       options: {
                         isHighlighted: true,
                       },
+                    },
+                    {
+                      name: 'url',
+                      type: 'url',
+                      title: 'URL',
                     },
                   ],
                 },

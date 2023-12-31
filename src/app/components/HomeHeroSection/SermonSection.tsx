@@ -38,18 +38,18 @@ const SermonsSection: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-800 min-h-screen p-2 py-40">
+    <div className="px-5 bg-gray-800 min-h-screen p-2 pt-16">
       <div className="text-center mb-6 md:mb-8">
         <h2 className="text-4xl text-white md:text-3xl lg:text-4xl font-bold">Enjoy Our Sermon</h2>
         <p className="text-gray-200 text-sm md:text-base">Listening to our sermon/messages for a great transformation</p>
       </div>
 
-      <h1 className="text-3xl font-bold text-white mb-4 text-center pt-5">Audio Sermons</h1>
+      {/* <h1 className="text-3xl font-bold text-white mb-4 text-center pt-5">Audio Sermons</h1> */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {sermons.map((sermon) => (
           <div
             key={sermon._id}
-            className="bg-white p-4 rounded-md cursor-pointer"
+            className="bg-white p-2 rounded-md cursor-pointer"
             onClick={() => handleSermonClick(sermon)}
           >
             <h2 className="text-xl font-bold mb-2">{sermon.title}</h2>

@@ -40,7 +40,7 @@ const HeroSection: React.FC = () => {
   const { backgroundColors, welcomeMessage, ctaButton } = data;
 
   return (
-    <div className="hero-section relative min-h-screen py-32">
+    <div className="hero-section relative min-h-full py-32">
       {backgroundColors.map((color: string, index: number) => (
         <div
           key={index}

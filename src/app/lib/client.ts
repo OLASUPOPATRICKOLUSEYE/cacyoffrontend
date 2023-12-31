@@ -1,11 +1,9 @@
 // lib/client.js
-// import { urlFor } from './client';
-import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+import { createClient } from '@sanity/client';
 
 const client = createClient({
   projectId: 'inrjwceq',
-  // projectId: process.env.NEXT_JS_APP_SANITY_PROJECT_ID,
   dataset: 'production',
   apiVersion: '2022-03-07',
   useCdn: true,
@@ -14,6 +12,9 @@ const client = createClient({
 
 const builder = imageUrlBuilder(client);
 
-export { client, builder, imageUrlBuilder, 
-  // urlFor 
-};
+// Define urlFor here
+function urlFor(source: string): any {
+  return builder.image(source);
+}
+
+export { client, builder, imageUrlBuilder, urlFor };

@@ -1,6 +1,5 @@
 "use client";
 // src/components/ContactSection.tsx
-
 import React, { useEffect, useState } from 'react';
 import { client } from '../../lib/client';
 
@@ -26,6 +25,10 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
     message: '',
   });
 
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [highlightedField, setHighlightedField] = useState<string | null>(null);
+
   useEffect(() => {
     if (contactSectionData.form) {
       setFormData({
@@ -46,33 +49,38 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/submitForm', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Use the Sanity client to store the form data
+      await client.create({
+        _type: 'contactSection', // Use the correct type for your document
+        form: {
+          ...formData,
         },
-        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        console.log('Form submitted successfully!');
-        // Optionally, you can handle success UI updates here
-      } else {
-        console.error('Form submission failed:', response.statusText);
-        // Optionally, you can handle error UI updates here
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      // Optionally, you can handle error UI updates here
-    }
+      // Success UI Updates
+      console.log('Form submitted successfully to Sanity!');
+      setSuccessMessage('Thank you for submitting the form!');
 
-    // Reset the form data
-    setFormData({
-      name: '',
-      contact: '',
-      email: '',
-      message: '',
-    });
+      // Optionally, you can display a success message to the user or redirect them to a thank-you page
+      // Example 2: Redirect to a thank-you page (you need to implement your own routing logic)
+      // router.push('/thank-you');
+
+      // Reset the form data
+      setFormData({
+        name: '',
+        contact: '',
+        email: '',
+        message: '',
+      });
+    } catch (error) {
+      // Error UI Updates
+      console.error('Error submitting form to Sanity:', error);
+      setErrorMessage('Form submission failed. Please try again.');
+
+      // Optionally, you can display an error message to the user or highlight the problematic field
+      // Example 2: Highlight the problematic field (you need to implement your own logic)
+      // setHighlightedField('name'); // Replace 'name' with the actual field causing the error
+    }
   };
 
   return (
@@ -86,6 +94,8 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
         <div className="mb-8 p-6 bg-white rounded-md shadow-md">
           <h3 className="text-2xl font-bold mb-4 text-blue-900">Contact Form</h3>
           <form onSubmit={handleSubmit}>
+          {successMessage && <p className="text-green-600">{successMessage}</p>}
+          {errorMessage && <p className="text-red-600">{errorMessage}</p>}
             {contactSectionData.form && (
               <>
                 <div className="mb-4">
@@ -98,7 +108,9 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="text-blue-900 w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    className={`text-blue-900 w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 ${
+                      highlightedField === 'name' ? 'border-red-500' : ''
+                    }`}
                     required
                   />
                 </div>
@@ -112,7 +124,9 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="contact"
                     value={formData.contact}
                     onChange={handleChange}
-                    className="w-full px-4 text-blue-900 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    className={`w-full px-4 text-blue-900 py-2 border rounded-md focus:outline-none focus:border-blue-500 ${
+                      highlightedField === 'contact' ? 'border-red-500' : ''
+                    }`}
                     required
                   />
                 </div>
@@ -126,7 +140,9 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border text-blue-900 rounded-md focus:outline-none focus:border-blue-500"
+                    className={`w-full px-4 py-2 border text-blue-900 rounded-md focus:outline-none focus:border-blue-500 ${
+                      highlightedField === 'email' ? 'border-red-500' : ''
+                    }`}
                     required
                   />
                 </div>
@@ -139,7 +155,9 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 text-blue-900 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    className={`w-full px-4 text-blue-900 py-2 border rounded-md focus:outline-none focus:border-blue-500 ${
+                      highlightedField === 'message' ? 'border-red-500' : ''
+                    }`}
                     required
                   ></textarea>
                 </div>
@@ -152,7 +170,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
               </>
             )}
           </form>
-        </div>
+      </div>
 
         <div className="p-6 bg-white rounded-md shadow-md">
           <h3 className="text-2xl text-blue-900 font-bold mb-4">Fellowship Location Map</h3>
@@ -168,8 +186,8 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
           ></iframe>
         </div>
       </div>
-    </section>  );
+    </section>
+  );
 };
 
 export default ContactSection;
-

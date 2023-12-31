@@ -1,16 +1,68 @@
-// components/Mission.js
-import React from 'react';
+// components/Mission.tsx
+"use client";
+import React, { useEffect, useState } from 'react';
+import imageUrlBuilder from '@sanity/image-url';
+import { client } from '../lib/client';
 
-const Mission = () => {
+interface MissionData {
+  missionImage: {
+    asset: {
+      url: string;
+    };
+  };
+  missionContent: string;
+}
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source: string | undefined): string {
+  return builder.image(source ?? '').url() ?? '';
+}
+
+const Mission: React.FC = () => {
+  const [missionData, setMissionData] = useState<MissionData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response: MissionData | null = await client.fetch(`
+          *[_type == "mission"] {
+            missionImage,
+            missionContent
+          }[0]
+        `);
+
+        setMissionData(response);
+      } catch (error) {
+        console.error('Error fetching data from Sanity:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className='flex flex-col md:flex-row'>
       {/* Image Section for Mission */}
-      <section id="mission-image" className="md:w-1/2 bg-cover bg-center h-64 md:h-80" style={{ backgroundImage: 'url("/images/image1.jpg")' }}>
+      <section
+        id="mission-image"
+        className="md:w-1/2 bg-cover bg-center h-64 md:h-80"
+        style={{ backgroundImage: `url("${urlFor(missionData?.missionImage.asset.url)}")` }}
+      >
         {/* Replace 'mission-image.jpg' with the actual source of your mission image */}
       </section>
 
       {/* Mission Section */}
-      <section id="mission" className="px-2 md:w-1/2 bg-cover bg-center text-white py-16" style={{ backgroundImage: 'url("/missionvission.jpeg")', backgroundSize: 'cover', backgroundColor: 'rgba(0, 0, 0, 0.5)', minHeight: '300px' }}>
+      <section
+        id="mission"
+        className="px-2 md:w-1/2 bg-cover bg-center text-white py-16"
+        style={{
+          backgroundImage: 'url("/missionvission.jpeg")',
+          backgroundSize: 'cover',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          minHeight: '300px',
+        }}
+      >
         <div className="container mx-auto">
           <div className="text-center mb-8">
             <h2 className="text-4xl font-bold">Mission</h2>
@@ -21,9 +73,7 @@ const Mission = () => {
 
           {/* Mission Content */}
           <div className="max-w-3xl mx-auto px-2">
-            <p className="text-gray-300">
-              At [Your Church/Fellowship Name], our mission is to [articulate your mission]. Our purpose is rooted in [core belief or value], and we strive to [specific goals or activities that support the mission].
-            </p>
+            <p className="text-gray-300">{missionData?.missionContent}</p>
           </div>
         </div>
       </section>
