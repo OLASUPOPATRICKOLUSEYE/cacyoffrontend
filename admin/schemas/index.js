@@ -1,7 +1,3 @@
-// import createSchema from 'part:@sanity/base/schema-creator';
-// import createType from 'all:part:@sanity/base/schema-creator';
-
-
 // All In Home
 import homeannouncement from './home/homeannouncement';
 import homecommunitysection from './home/homecommunitysection';

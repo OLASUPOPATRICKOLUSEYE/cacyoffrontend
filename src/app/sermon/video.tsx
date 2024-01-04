@@ -1,77 +1,98 @@
-// pages/audio.tsx
-import React, { useRef } from 'react';
+"use client";
+// pages/index.tsx
+import React, { useState, useEffect, useRef } from 'react';
+import { client } from '../lib/client';
+import ReactPlayer from 'react-player';
 
 interface Sermon {
-  id: number;
-  title: string;
-  speaker: string;
-  date: string;
-  videoSrc: string; // Update property name to videoSrc
+  _id: string;
+  sermons: {
+    _key: string;
+    title: string;
+    author: string;
+    date: string;
+    video: {
+      asset: {
+        _ref: string;
+      };
+    };
+  }[];
 }
 
-const sermonsData: Sermon[] = [
-  {
-    id: 1,
-    title: 'Sermon 1',
-    speaker: 'Pastor John Doe',
-    date: '2023-01-01',
-    videoSrc: '/public/video/How to Compress a Video File without Losing Quality How to Make Video Files Smaller.mp4'
-  },
-  {
-    id: 2,
-    title: 'Sermon 2',
-    speaker: 'Pastor Jane Smith',
-    date: '2023-02-01',
-    videoSrc: '/public/video/How to Quickly Compress Large Video Files via VLC - GIZBOT.mp4'
-  },
-  {
-    id: 3,
-    title: 'Sermon 3',
-    speaker: 'Pastor John Doe',
-    date: '2023-01-01',
-    videoSrc: '/public/video/How to reduce a video file size.mp4'
-  },
-  {
-    id: 4,
-    title: 'Sermon 4',
-    speaker: 'Pastor Jane Smith',
-    date: '2023-02-01',
-    videoSrc: '/public/video/How to reduce a video file size.mp4'
-  },  
-];
-
 const Video: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null); // Update ref type to HTMLVideoElement
+  const [sermonsData, setSermonsData] = useState<Sermon[]>([]);
+  const [selectedSermon, setSelectedSermon] = useState<Sermon | null>(null);
+
+  useEffect(() => {
+    const fetchSermons = async () => {
+      try {
+        const result: Sermon[] = await client.fetch('*[_type == "video_sermon"]');
+        setSermonsData(result);
+      } catch (error) {
+        console.error('Error fetching sermons from Sanity:', error);
+      }
+    };
+
+    fetchSermons();
+  }, []);
 
   const handleSermonClick = (sermon: Sermon) => {
-    // Play the video when a sermon is clicked
-    if (videoRef.current) {
-      videoRef.current.src = sermon.videoSrc; // Update property name to videoSrc
-      videoRef.current.play();
+    setSelectedSermon(sermon);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      selectedSermon &&
+      event.target instanceof Node &&
+      !event.target.closest('.selected-sermon')
+    ) {
+      setSelectedSermon(null);
     }
   };
 
-  return (
-    <div className="p-1 pt-10">
-      <h1 className="text-3xl font-bold text-white mb-4 text-center">Video Sermons</h1>
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
 
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [selectedSermon]);
+
+  return (
+    <div className="bg-gray-800 min-h-screen p-2 py-40">
+      <h1 className="text-3xl font-bold text-white mb-4 text-center pt-5">Video Sermons</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {sermonsData.map((sermon) => (
           <div
-            key={sermon.id}
-            className="bg-white p-4 rounded-md cursor-pointer"
+            key={sermon._id}
+            className={`bg-white p-4 rounded-md cursor-pointer ${
+              selectedSermon === sermon ? 'selected-sermon' : ''
+            }`}
             onClick={() => handleSermonClick(sermon)}
           >
-            <h2 className="text-xl font-bold mb-2">{sermon.title}</h2>
-
-            {/* Video Player */}
-            <video ref={videoRef} controls src={sermon.videoSrc} className="mb-2" /> {/* Update property name to videoSrc */}
-
-            <p className="text-gray-600 mb-2">{sermon.speaker}</p>
-            <p className="text-gray-600">{sermon.date}</p>
+            <h2 className="text-xl font-bold mb-2">{sermon.sermons[0].title}</h2>
+            <p className="text-gray-600 mb-2">Author: {sermon.sermons[0].author}</p>
+            <p className="text-gray-600">Date: {sermon.sermons[0].date}</p>
           </div>
         ))}
       </div>
+
+      {/* Conditionally render selected sermon details */}
+      {selectedSermon && (
+        <div className="mt-4">
+          <h2 className="text-2xl font-bold text-white mb-2">{selectedSermon.sermons[0].title}</h2>
+          <p className="text-gray-400 mb-2">Author: {selectedSermon.sermons[0].author}</p>
+          <p className="text-gray-400 mb-4">Date: {selectedSermon.sermons[0].date}</p>
+
+          {/* React Player */}
+          <ReactPlayer
+            url={`https://cdn.sanity.io/files/inrjwceq/production/${process.env.NEXT_JS_APP_SANITY_PROJECT_ID}/0/${selectedSermon.sermons[0].video.asset._ref}`}
+            controls
+            width="100%"
+            height="auto"
+          />
+        </div>
+      )}
     </div>
   );
 };

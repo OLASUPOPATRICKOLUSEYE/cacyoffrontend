@@ -1,19 +1,38 @@
-// schemas/mission.js
+// schemas/churchVision.js
 export default {
-    name: 'mission',
-    title: 'Mission Section',
-    type: 'document',
-    fields: [
-      {
-        name: 'missionImage',
-        title: 'Mission Image',
-        type: 'image',
+  name: 'churchMission',
+  title: 'Church Mision',
+  type: 'document',
+  fields: [
+    {
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      options: {
+        hotspot: true, // Enables the hotspot for cropping
       },
-      {
-        name: 'missionContent',
-        title: 'Mission Content',
-        type: 'text',
-      },
-    ],
-  };
-  
+      fields: [
+        {
+          name: 'url',
+          type: 'url',
+          title: 'URL',
+        },
+      ],
+    },
+    {
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+    },
+    {
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      type: 'text',
+    },
+  ],
+};

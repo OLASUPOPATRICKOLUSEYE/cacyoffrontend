@@ -47,10 +47,10 @@ const CommunitySection: React.FC = () => {
   return (
     <section id="community" className="px-2 bg-gradient-to-r from-yellow-500 to-red-500 py-8 md:py-12 text-white">
       <div className="container mx-auto">
-        <h1 className="text-xl md:text-2xl font-bold mb-4">Testimonials / Our Programme</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-center mb-10">Testimonials / Our Programme</h1>
         {/* Testimonials */}
         <div className="mb-6 md:mb-8">
-          <h3 className="text-xl md:text-2xl font-bold mb-4">Testimonials</h3>
+          {/* <h3 className="text-xl md:text-2xl font-bold mb-4">Testimonials</h3> */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="bg-gray-700 p-4 rounded-lg">

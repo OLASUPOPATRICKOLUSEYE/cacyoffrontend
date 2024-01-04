@@ -31,7 +31,7 @@ export default {
                     isHighlighted: true,
                   },
                 },
-                {
+                  {
                   name: 'url',
                   type: 'url',
                   title: 'URL',

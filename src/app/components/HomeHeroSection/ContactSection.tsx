@@ -61,10 +61,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
       console.log('Form submitted successfully to Sanity!');
       setSuccessMessage('Thank you for submitting the form!');
 
-      // Optionally, you can display a success message to the user or redirect them to a thank-you page
-      // Example 2: Redirect to a thank-you page (you need to implement your own routing logic)
-      // router.push('/thank-you');
-
       // Reset the form data
       setFormData({
         name: '',
@@ -76,10 +72,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({ contactSectionData }) =
       // Error UI Updates
       console.error('Error submitting form to Sanity:', error);
       setErrorMessage('Form submission failed. Please try again.');
-
-      // Optionally, you can display an error message to the user or highlight the problematic field
-      // Example 2: Highlight the problematic field (you need to implement your own logic)
-      // setHighlightedField('name'); // Replace 'name' with the actual field causing the error
     }
   };
 

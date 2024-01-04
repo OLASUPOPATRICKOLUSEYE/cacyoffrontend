@@ -1,9 +1,7 @@
 "use client";
-// components/EventsSection.tsx
 import React, { useState, useEffect } from 'react';
-import {client} from '../../lib/client'; // Import your shared createClient instance
+import { client } from '../../lib/client';
 
-// TypeScript Types
 interface Event {
   title: string;
   date: string;
@@ -30,17 +28,17 @@ const EventsSection: React.FC = () => {
         // Fetch events data from the backend using the shared client instance
         const response = await client.fetch('*[_type == "event"]{title, date, time, location, description}');
         const now = new Date();
-
+    
         // Calculate time remaining for each event
         const updatedTimers: Timer[] = response.map((event: any) => {
-          const eventDate = new Date(`${event.date} ${event.time}`);
+          const eventDate = new Date(`${event.date}T${event.time}`);
           const timeDifference = eventDate.getTime() - now.getTime();
-
+    
           const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
           const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
+    
           return {
             ...event,
             timeRemaining: {
@@ -51,14 +49,22 @@ const EventsSection: React.FC = () => {
             },
           };
         });
-
+    
         setTimers(updatedTimers);
       } catch (error) {
         console.error('Error fetching events data:', error);
       }
     };
-
+    
     fetchEventsData();
+
+    // Set up interval to update time remaining every second
+    const intervalId = setInterval(() => {
+      fetchEventsData();
+    }, 1000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -74,7 +80,7 @@ const EventsSection: React.FC = () => {
           <div className="bg-green-900 p-4 md:p-6 rounded-lg">
             <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-4">Calendar</h3>
             <ul className="list-disc text-gray-200 ml-4 md:ml-6">
-              {timers.map(event => (
+              {timers.map((event) => (
                 <li key={event.title} className="mb-1">
                   <span className="font-bold">{event.date}:</span> {event.title}
                 </li>
@@ -85,14 +91,15 @@ const EventsSection: React.FC = () => {
           {/* Event Details */}
           <div className="col-span-2 space-y-4 md:space-y-6">
             <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-4">Event Details</h3>
-            {timers.map(event => (
+            {timers.map((event) => (
               <div key={event.title} className="bg-yellow-900 p-4 md:p-6 rounded-lg">
                 <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">{event.title}</h4>
                 <p className="text-gray-200 text-sm md:text-base">
                   <span className="font-bold">Date:</span> {event.date}<br />
                   <span className="font-bold">Time:</span> {event.time}<br />
                   <span className="font-bold">Location:</span> {event.location}<br />
-                  <span className="font-bold">Time Remaining:</span> {`${event.timeRemaining.days}d ${event.timeRemaining.hours}h ${event.timeRemaining.minutes}m ${event.timeRemaining.seconds}s`}
+                  <span className="font-bold">Time Remaining:</span>{' '}
+                  {`${event.timeRemaining.days}d ${event.timeRemaining.hours}h ${event.timeRemaining.minutes}m ${event.timeRemaining.seconds}s`}
                   <br />
                   {event.description && (
                     <>

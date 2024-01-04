@@ -1,11 +1,11 @@
 // src/app/api/submitForm.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { client } from '../lib/client';
+import { client } from '../app/lib/client';
 
 export default async function submitForm(req: NextApiRequest, res: NextApiResponse) {
   // Allow requests only from your local development server (localhost:3000)
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
