@@ -1,75 +1,72 @@
-"use client"
-// church-history-frontend/src/components/ChurchHistory.tsx
+// components/ChurchMissionSection.tsx
+"use client";
 import React, { useEffect, useState } from 'react';
 import imageUrlBuilder from '@sanity/image-url';
-import { client } from '../lib/client'; // Import your shared createClient instance
+import { client } from '../lib/client';
+import Image from 'next/image';
 
-// Define the types for your data
-interface ChurchHistoryData {
+interface HistoryData {
+  image: {
+    asset: {
+      _ref: string;
+    };
+  };
   title: string;
-  subtitle: string;
-  image: string;
-  content: { children: { text: string }[] }[];
+  content: string;
 }
 
 const builder = imageUrlBuilder(client);
 
-function urlFor(source: any): string {
-  return builder.image(source ?? '').url() ?? '';
+function urlFor(source: string | undefined): string {
+  return source ? builder.image(source).url() : '';
 }
 
 const ChurchHistory: React.FC = () => {
-  const [churchHistoryData, setChurchHistoryData] = useState<ChurchHistoryData | null>(null);
+  const [historyData, setHistoryData] = useState<HistoryData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch data from Sanity
-        const response: ChurchHistoryData | null = await client.fetch(`
+        const response: HistoryData | null = await client.fetch(`
           *[_type == "churchHistory"] {
+            image,
             title,
-            subtitle,
-            "image": image.asset->url,
             content
           }[0]
         `);
 
-        // Set the fetched data to state
-        setChurchHistoryData(response);
+        setHistoryData(response);
       } catch (error) {
         console.error('Error fetching data from Sanity:', error);
       }
     };
 
-    // Call the fetchData function
     fetchData();
   }, []);
 
   return (
-    <div className='flex flex-col md:flex-row'>
-      <section id="churchhistory-image" className="md:w-1/2 bg-cover bg-center h-80 md:h-80" style={{ backgroundImage: `url("${churchHistoryData?.image}")` }}>
-        {/* Replace 'mission-image.jpg' with the actual source of your mission image */}
-      </section>
-
-      {/* Church History Section */}
-      <section id="church-history" className="px-2 md:w-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-16">
-        <div className="container mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold">{churchHistoryData?.title}</h2>
-            <p className="text-gray-300">
-              {churchHistoryData?.subtitle}
-            </p>
-          </div>
-
-          {/* Church History Content */}
-          <div className="max-w-3xl mx-auto px-2">
-            {churchHistoryData?.content && churchHistoryData.content.map((paragraph, index) => (
-              <p className="text-gray-300 mt-4" key={index}>{paragraph.children[0].text}</p>
-            ))}
-          </div>
+    <section className="py-16 flex flex-col md:flex-row items-center bg-gray-400">
+      {/* Church History Image */}
+      {historyData?.image.asset._ref && (
+        <div className="w-full md:w-1/2 md:pr-8 mb-8 md:mb-0">
+          <Image
+            src={urlFor(historyData.image.asset._ref)}
+            alt={historyData.title}
+            layout="responsive"
+            width={300}
+            height={300}
+            objectFit="cover"
+            className='rounded-md px-1'
+          />
         </div>
-      </section>
-    </div>
+      )}
+
+      {/* Mission Content */}
+      <div className="w-full md:w-1/2 p-4">
+        <h2 className="text-4xl font-bold mb-4 text-white">{historyData?.title}</h2>
+        <p className="text-black">{historyData?.content}</p>
+      </div>
+    </section>
   );
 };
 

@@ -64,7 +64,7 @@ const LeadershipTeam: React.FC = () => {
         {leaderships.map((leadership) => (
           <div key={leadership._id} className="text-center mb-6 md:mb-8 ">
             <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold pt-10 ">{leadership.title}</h1>
-            <h2 className="text-3xl md:text-3xl lg:text-xl font-bold pt-4">{leadership.subtitle}</h2>
+            <h2 className="text-3xl md:text-1xl lg:text-xl font-bold pt-4">{leadership.subtitle}</h2>
           </div>
         ))}
 
