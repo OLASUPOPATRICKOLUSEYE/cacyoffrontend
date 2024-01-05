@@ -7,8 +7,7 @@ import Video from './video';
 const sermon = () => {
   return (
     <>
-      <Audio/>
-      {/* <Video/> */}
+      <Audio/>      
     </>
   );
 };
